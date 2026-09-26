@@ -14,9 +14,12 @@ identification.
 * The calibration obstruction in `LightCompletion` assumes that the squared transport singular
   value equals the field metric, a fixed positive regularizer, and optical coefficient `1 + k g`
   with `k > 0`. It excludes that particular identification only.
-* The Edition 7.2 results of Sections 4.9e–f, 4.10a and 5.2 (the gapped spectral-measure
-  extension, conserved-strength upward redistribution, the quantum-oscillator realization and
-  the weakest-singular-value criterion) are proved in the written paper and checked by its exact
-  rational scripts; they are not yet formalized here.
+* Edition 7.2 (`LightSpectral`): the bounds of Corollary 4.8 are proved for a finite spectrum
+  (finitely many gaps with nonnegative weights), not for a general spectral measure; the
+  spectral theorem, the perturbative derivation of the integrals (4.M2), the lower bound
+  `B/β(a) ≤ g` of Corollary 4.7, and the upward-redistribution theorem of Section 4.9f are not
+  formalized. For the oscillator, the Gaussian ground state and the Heisenberg-equation
+  response are not formalized; the Lean file checks that the stated formulas agree with each
+  other and gives the exact table.
 
 Formalization is evidence for the mathematics, not for the physical interpretation.
