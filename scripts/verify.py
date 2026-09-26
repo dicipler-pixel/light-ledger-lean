@@ -41,8 +41,10 @@ MODULES = [(m["module"], m["path"]) for m in CONFIG["modules"]]
 EXPECTED_THEOREMS = CONFIG["expected_theorems"]
 EXPECTED_FALSE_CONTROLS = CONFIG["expected_false_controls"]
 ROOT_IMPORTS = CONFIG["root_imports"]
+# Private helper lemmas cannot be named from another file, so they are not listed; their
+# axioms are audited through every public theorem that uses them.
 THEOREM_RE = re.compile(
-    r"^\s*(?:@\[[^\]]*\]\s*)?(?:private\s+|protected\s+)?theorem\s+([^\s:({\[]+)", re.M)
+    r"^\s*(?:@\[[^\]]*\]\s*)?(?:protected\s+)?theorem\s+([^\s:({\[]+)", re.M)
 NAMESPACE_RE = re.compile(r"^namespace\s+(\S+)", re.M)
 MATH_FAILURE = re.compile(
     r"unsolved goals|proved that the proposition.*false|tactic '.*' failed|"
