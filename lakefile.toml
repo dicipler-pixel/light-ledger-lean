@@ -1,6 +1,6 @@
 name = "light-ledger-lean"
 version = "1.0.0"
-defaultTargets = ["LightBridges", "OpticalMetric", "Rigidity", "LightCompletion"]
+defaultTargets = ["LightBridges", "OpticalMetric", "Rigidity", "LightCompletion", "LightSpectral"]
 
 [[require]]
 name = "mathlib"
@@ -20,3 +20,7 @@ name = "Rigidity"
 
 [[lean_lib]]
 name = "LightCompletion"
+
+# Written for this repository from Edition 7.2 (Sections 4.9e, 4.10a and 5.2).
+[[lean_lib]]
+name = "LightSpectral"

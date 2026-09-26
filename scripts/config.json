@@ -43,14 +43,19 @@
     {
       "module": "LightCompletion",
       "path": "LightCompletion.lean"
+    },
+    {
+      "module": "LightSpectral",
+      "path": "LightSpectral.lean"
     }
   ],
-  "expected_theorems": 95,
-  "expected_false_controls": 4,
+  "expected_theorems": 111,
+  "expected_false_controls": 6,
   "root_imports": [
     "LightBridges",
     "OpticalMetric",
     "Rigidity",
-    "LightCompletion"
+    "LightCompletion",
+    "LightSpectral"
   ]
 }
