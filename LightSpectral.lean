@@ -164,6 +164,85 @@ theorem response_bracket (y : ℝ) (ha : 0 < a) (hta : ∀ i ∈ s, a ≤ t i)
     rw [e, div_le_div_iff₀ d (mul_pos ht hay)]
     nlinarith [mul_nonneg (mul_nonneg hwi hy) (sub_nonneg.mpr hsq)]
 
+
+/-! ## Corollary 4.7: the lower bound from two readings -/
+
+/-- The kernel ratio `β(t) = 2t³/((t² − y₁)(t² − y₂))`. -/
+def kernelRatio (y₁ y₂ t : ℝ) : ℝ := 2 * t ^ 3 / ((t ^ 2 - y₁) * (t ^ 2 - y₂))
+
+/-- `β` falls as the gap grows: for `a ≤ t` and subgap readings, `β(t) ≤ β(a)`. -/
+theorem kernelRatio_antitone (y₁ y₂ a t : ℝ) (ha : 0 < a) (hat : a ≤ t) (hy₁ : 0 ≤ y₁)
+    (hy₂ : 0 ≤ y₂) (h₁ : y₁ < a ^ 2) (h₂ : y₂ < a ^ 2) :
+    kernelRatio y₁ y₂ t ≤ kernelRatio y₁ y₂ a := by
+  have ht : 0 < t := lt_of_lt_of_le ha hat
+  have hsq : a ^ 2 ≤ t ^ 2 := by nlinarith
+  have form : ∀ x : ℝ, 0 < x → x ^ 2 - y₁ ≠ 0 → x ^ 2 - y₂ ≠ 0 →
+      kernelRatio y₁ y₂ x = 2 / ((x - y₁ / x) * (1 - y₂ / x ^ 2)) := by
+    intro x hx d1 d2
+    unfold kernelRatio
+    have hx0 : x ≠ 0 := hx.ne'
+    rw [show x - y₁ / x = (x ^ 2 - y₁) / x by field_simp <;> ring,
+      show 1 - y₂ / x ^ 2 = (x ^ 2 - y₂) / x ^ 2 by field_simp <;> ring]
+    field_simp <;> ring
+  have da1 : 0 < a ^ 2 - y₁ := by linarith
+  have da2 : 0 < a ^ 2 - y₂ := by linarith
+  rw [form t ht (by linarith) (by linarith), form a ha da1.ne' da2.ne']
+  have p1 : 0 < a - y₁ / a := by
+    rw [show a - y₁ / a = (a ^ 2 - y₁) / a by field_simp <;> ring]
+    exact div_pos da1 ha
+  have p2 : 0 < 1 - y₂ / a ^ 2 := by
+    rw [show 1 - y₂ / a ^ 2 = (a ^ 2 - y₂) / a ^ 2 by field_simp <;> ring]
+    exact div_pos da2 (by positivity)
+  have q1 : a - y₁ / a ≤ t - y₁ / t := by
+    have : y₁ / t ≤ y₁ / a := div_le_div_of_nonneg_left hy₁ ha hat
+    linarith
+  have q2 : 1 - y₂ / a ^ 2 ≤ 1 - y₂ / t ^ 2 := by
+    have : y₂ / t ^ 2 ≤ y₂ / a ^ 2 := div_le_div_of_nonneg_left hy₂ (by positivity) hsq
+    linarith
+  have hprod : (a - y₁ / a) * (1 - y₂ / a ^ 2) ≤ (t - y₁ / t) * (1 - y₂ / t ^ 2) :=
+    mul_le_mul q1 q2 p2.le (le_trans p1.le q1)
+  exact div_le_div_of_nonneg_left (by norm_num) (mul_pos p1 p2) hprod
+
+theorem kernelRatio_pos (y₁ y₂ a : ℝ) (ha : 0 < a) (h₁ : y₁ < a ^ 2) (h₂ : y₂ < a ^ 2) :
+    0 < kernelRatio y₁ y₂ a := by
+  unfold kernelRatio
+  have d1 : 0 < a ^ 2 - y₁ := by linarith
+  have d2 : 0 < a ^ 2 - y₂ := by linarith
+  exact div_pos (by positivity) (mul_pos d1 d2)
+
+/-- **Corollary 4.7, lower bound**: `B ≤ β(a) g`, i.e. `B / β(a) ≤ g`. -/
+theorem secant_le_kernelRatio_metric (y₁ y₂ : ℝ) (ha : 0 < a) (hta : ∀ i ∈ s, a ≤ t i)
+    (hw : ∀ i ∈ s, 0 ≤ w i) (hy₁ : 0 ≤ y₁) (hy₂ : 0 ≤ y₂) (h₁ : y₁ < a ^ 2)
+    (h₂ : y₂ < a ^ 2) :
+    secant s t w y₁ y₂ ≤ kernelRatio y₁ y₂ a * metric s t w := by
+  unfold secant metric
+  rw [mul_sum]
+  apply sum_le_sum
+  intro i hi
+  have ht : 0 < t i := lt_of_lt_of_le ha (hta i hi)
+  have hsq : a ^ 2 ≤ t i ^ 2 := by nlinarith [hta i hi]
+  have d1 : t i ^ 2 - y₁ ≠ 0 := by
+    have : 0 < t i ^ 2 - y₁ := by linarith
+    exact this.ne'
+  have d2 : t i ^ 2 - y₂ ≠ 0 := by
+    have : 0 < t i ^ 2 - y₂ := by linarith
+    exact this.ne'
+  have split : 2 * t i * w i / ((t i ^ 2 - y₁) * (t i ^ 2 - y₂)) =
+      kernelRatio y₁ y₂ (t i) * (w i / t i ^ 2) := by
+    unfold kernelRatio
+    field_simp <;> ring
+  rw [split]
+  exact mul_le_mul_of_nonneg_right
+    (kernelRatio_antitone y₁ y₂ a (t i) ha (hta i hi) hy₁ hy₂ h₁ h₂)
+    (div_nonneg (hw i hi) (by positivity))
+
+theorem secant_div_le_metric (y₁ y₂ : ℝ) (ha : 0 < a) (hta : ∀ i ∈ s, a ≤ t i)
+    (hw : ∀ i ∈ s, 0 ≤ w i) (hy₁ : 0 ≤ y₁) (hy₂ : 0 ≤ y₂) (h₁ : y₁ < a ^ 2)
+    (h₂ : y₂ < a ^ 2) :
+    secant s t w y₁ y₂ / kernelRatio y₁ y₂ a ≤ metric s t w := by
+  rw [div_le_iff₀ (kernelRatio_pos y₁ y₂ a ha h₁ h₂), mul_comm]
+  exact secant_le_kernelRatio_metric s t w a y₁ y₂ ha hta hw hy₁ hy₂ h₁ h₂
+
 /-! ## The confined oscillator (Section 4.10a) -/
 
 /-- The oscillator's single transition reproduces the field metric `q²/(2mħΩ³)`. -/
