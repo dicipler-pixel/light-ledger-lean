@@ -9,7 +9,7 @@
 ![Theorems](https://img.shields.io/badge/theorems-111-2EA043)
 ![sorry](https://img.shields.io/badge/sorry-0-2EA043)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
-[![Paper DOI](https://img.shields.io/badge/paper-10.5281%2Fzenodo.22124938-blue)](https://doi.org/10.5281/zenodo.22124938)
+[![Paper DOI](https://img.shields.io/badge/paper-10.5281%2Fzenodo.22123115-blue)](https://doi.org/10.5281/zenodo.22123115)
 
 Jeromie Beasley
 
@@ -68,7 +68,7 @@ python3 scripts/verify.py
 ## The paper
 
 *Light Keeps the Ledger*, Jeromie Beasley. DOI
-[10.5281/zenodo.22124938](https://doi.org/10.5281/zenodo.22124938).
+[10.5281/zenodo.22123115](https://doi.org/10.5281/zenodo.22123115).
 
 ## Citation, licence and AI use
 

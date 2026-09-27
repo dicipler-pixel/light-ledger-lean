@@ -5,7 +5,7 @@ import Rigidity
 # Edition 7.2: spectral bounds, the confined oscillator and the identification target
 
 Finite forms of Sections 4.9e, 4.10a and 5.2 of *The Light Keeps the Ledger*
-(Jeromie Beasley, DOI 10.5281/zenodo.22124938).
+(Jeromie Beasley, DOI 10.5281/zenodo.22123115).
 
 A dipole-active spectrum is a finite list of excitation gaps `t i ≥ a > 0` with
 oscillator weights `w i ≥ 0`. From it:
