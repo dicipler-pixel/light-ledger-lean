@@ -16,8 +16,9 @@ identification.
   with `k > 0`. It excludes that particular identification only.
 * Edition 7.2 (`LightSpectral`): the bounds of Corollary 4.8 are proved for a finite spectrum
   (finitely many gaps with nonnegative weights), not for a general spectral measure; the
-  spectral theorem, the perturbative derivation of the integrals (4.M2), and the upward-redistribution theorem of Section 4.9f are not
-  formalized. For the oscillator, the Gaussian ground state and the Heisenberg-equation
+  spectral theorem, the perturbative derivation of the integrals (4.M2), and the matrix-valued, continuous-measure form of Theorem 4.9 and Corollary 4.10 are not
+  formalized; Theorem 4.9 is proved for strength on a finite grid of gaps, one polarization at
+  a time. For the oscillator, the Gaussian ground state and the Heisenberg-equation
   response are not formalized; the Lean file checks that the stated formulas agree with each
   other and gives the exact table.
 
