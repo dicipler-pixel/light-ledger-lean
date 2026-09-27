@@ -243,6 +243,91 @@ theorem secant_div_le_metric (y₁ y₂ : ℝ) (ha : 0 < a) (hta : ∀ i ∈ s, 
   rw [div_le_iff₀ (kernelRatio_pos y₁ y₂ a ha h₁ h₂), mul_comm]
   exact secant_le_kernelRatio_metric s t w a y₁ y₂ ha hta hw hy₁ hy₂ h₁ h₂
 
+
+/-! ## Theorem 4.9: conserved strength and upward redistribution (finite form)
+
+Oscillator strength sits on an increasing grid of gaps `t 0 < t 1 < … < t n`. The change
+between two stages is `d k = m₀ k − m₁ k`; its cumulative sum `S j = Σ_{k ≤ j} d k` is
+nonnegative (no low-energy interval gains strength) and vanishes at the top (the total is
+conserved). -/
+
+/-- Cumulative change `S j = Σ_{k ≤ j} d k`. -/
+def cumulative (d : ℕ → ℝ) (j : ℕ) : ℝ := ∑ k ∈ range (j + 1), d k
+
+/-- Summation by parts. -/
+theorem sum_by_parts (F d : ℕ → ℝ) (n : ℕ) :
+    ∑ k ∈ range (n + 1), F k * d k =
+      ∑ j ∈ range n, (F j - F (j + 1)) * cumulative d j + F n * cumulative d n := by
+  induction n with
+  | zero => simp [cumulative]
+  | succ n ih =>
+    rw [sum_range_succ, ih, sum_range_succ (fun j => (F j - F (j + 1)) * cumulative d j)]
+    have h : cumulative d (n + 1) = cumulative d n + d (n + 1) := by
+      simp only [cumulative]
+      rw [sum_range_succ]
+    rw [h]
+    ring
+
+/-- With the total conserved, a kernel reads the change through the cumulative order. -/
+theorem redistribution_sum (F d : ℕ → ℝ) (n : ℕ) (htot : cumulative d n = 0) :
+    ∑ k ∈ range (n + 1), F k * d k = ∑ j ∈ range n, (F j - F (j + 1)) * cumulative d j := by
+  rw [sum_by_parts, htot, mul_zero, add_zero]
+
+/-- **Theorem 4.9, order.** A decreasing kernel sees a nonnegative change. -/
+theorem redistribution_nonneg (F d : ℕ → ℝ) (n : ℕ) (hF : ∀ j < n, F (j + 1) < F j)
+    (hS : ∀ j < n, 0 ≤ cumulative d j) (htot : cumulative d n = 0) :
+    0 ≤ ∑ k ∈ range (n + 1), F k * d k := by
+  rw [redistribution_sum F d n htot]
+  exact sum_nonneg fun j hj =>
+    mul_nonneg (sub_nonneg.mpr (hF j (mem_range.mp hj)).le) (hS j (mem_range.mp hj))
+
+/-- **Theorem 4.9, kernel.** A strictly decreasing kernel sees no change exactly when no
+cumulative change occurs anywhere. -/
+theorem redistribution_zero_iff (F d : ℕ → ℝ) (n : ℕ) (hF : ∀ j < n, F (j + 1) < F j)
+    (hS : ∀ j < n, 0 ≤ cumulative d j) (htot : cumulative d n = 0) :
+    ∑ k ∈ range (n + 1), F k * d k = 0 ↔ ∀ j < n, cumulative d j = 0 := by
+  rw [redistribution_sum F d n htot, sum_eq_zero_iff_of_nonneg fun j hj =>
+    mul_nonneg (sub_nonneg.mpr (hF j (mem_range.mp hj)).le) (hS j (mem_range.mp hj))]
+  constructor
+  · intro h j hj
+    rcases mul_eq_zero.mp (h j (mem_range.mpr hj)) with h1 | h1
+    · exact absurd (sub_eq_zero.mp h1) (ne_of_gt (hF j hj))
+    · exact h1
+  · intro h j hj
+    rw [h j (mem_range.mp hj), mul_zero]
+
+/-- The metric kernel `t⁻³` falls along an increasing positive grid. -/
+theorem metric_kernel_strictAnti (t : ℕ → ℝ) (ht : StrictMono t) (h0 : 0 < t 0) (j : ℕ) :
+    1 / t (j + 1) ^ 3 < 1 / t j ^ 3 := by
+  have hj : 0 < t j := lt_of_lt_of_le h0 (ht.monotone (Nat.zero_le j))
+  have hlt : t j < t (j + 1) := ht (Nat.lt_succ_self j)
+  apply one_div_lt_one_div_of_lt (by positivity)
+  exact pow_lt_pow_left₀ hlt hj.le (by norm_num)
+
+/-- The response kernel `2/(t² − y)` falls along the grid for a subgap reading `y < t₀²`. -/
+theorem response_kernel_strictAnti (t : ℕ → ℝ) (ht : StrictMono t) (h0 : 0 < t 0) (y : ℝ)
+    (hy : y < t 0 ^ 2) (j : ℕ) :
+    2 / (t (j + 1) ^ 2 - y) < 2 / (t j ^ 2 - y) := by
+  have hj : 0 < t j := lt_of_lt_of_le h0 (ht.monotone (Nat.zero_le j))
+  have hmono : t 0 ≤ t j := ht.monotone (Nat.zero_le j)
+  have hlt : t j < t (j + 1) := ht (Nat.lt_succ_self j)
+  have hsq0 : t 0 ^ 2 ≤ t j ^ 2 := by nlinarith
+  have hsq : t j ^ 2 < t (j + 1) ^ 2 := by nlinarith
+  exact div_lt_div_of_pos_left (by norm_num) (by linarith) (by linarith)
+
+/-- **Theorem 4.9, common kernel (finite form).** Under upward redistribution with conserved
+total, the metric change `L = Σ t⁻³ d` vanishes exactly when the response change
+`T(y) = Σ 2/(t² − y) d` does, and both vanish exactly when the cumulative change vanishes. -/
+theorem metric_response_common_kernel (t d : ℕ → ℝ) (n : ℕ) (ht : StrictMono t)
+    (h0 : 0 < t 0) (y : ℝ) (hy : y < t 0 ^ 2) (hS : ∀ j < n, 0 ≤ cumulative d j)
+    (htot : cumulative d n = 0) :
+    (∑ k ∈ range (n + 1), 1 / t k ^ 3 * d k = 0 ↔ ∀ j < n, cumulative d j = 0) ∧
+    (∑ k ∈ range (n + 1), 2 / (t k ^ 2 - y) * d k = 0 ↔ ∀ j < n, cumulative d j = 0) :=
+  ⟨redistribution_zero_iff (fun k => 1 / t k ^ 3) d n
+      (fun j _ => metric_kernel_strictAnti t ht h0 j) hS htot,
+    redistribution_zero_iff (fun k => 2 / (t k ^ 2 - y)) d n
+      (fun j _ => response_kernel_strictAnti t ht h0 y hy j) hS htot⟩
+
 /-! ## The confined oscillator (Section 4.10a) -/
 
 /-- The oscillator's single transition reproduces the field metric `q²/(2mħΩ³)`. -/

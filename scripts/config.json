@@ -49,7 +49,7 @@
       "path": "LightSpectral.lean"
     }
   ],
-  "expected_theorems": 115,
+  "expected_theorems": 122,
   "expected_false_controls": 6,
   "root_imports": [
     "LightBridges",
