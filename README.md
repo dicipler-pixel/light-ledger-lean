@@ -6,7 +6,7 @@
 
 [![Lean proof check](https://github.com/dicipler-pixel/light-ledger-lean/actions/workflows/build.yml/badge.svg)](https://github.com/dicipler-pixel/light-ledger-lean/actions/workflows/build.yml)
 ![Lean](https://img.shields.io/badge/Lean-v4.33.0-blue)
-![Theorems](https://img.shields.io/badge/theorems-111-2EA043)
+![Theorems](https://img.shields.io/badge/theorems-115-2EA043)
 ![sorry](https://img.shields.io/badge/sorry-0-2EA043)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey)
 [![Paper DOI](https://img.shields.io/badge/paper-10.5281%2Fzenodo.22123115-blue)](https://doi.org/10.5281/zenodo.22123115)
@@ -44,8 +44,8 @@ were written, before they were first checked; the check below is the current evi
 | **Optical response as a weighted metric**: positive weights, matching null directions, lower and upper bounds, and the peel: reducing channel weights cannot raise the response, and a null direction persists | [`OpticalMetric`](OpticalMetric.lean) | 16 |
 | **Rigidity**: the regularized singular-value response and its positivity | [`Rigidity`](Rigidity.lean) | 8 |
 | **Completion steps**: equal metric with unequal static response, the unique lossless two-pole zero between the poles, the calibration obstruction, equal weighted-Gram kernels | [`LightCompletion`](LightCompletion.lean) | 9 |
-| **Edition 7.2** (§4.9e, §4.10a, §5.2): for a finite spectrum above a gap `a`, `2ag ≤ α₀`, `α₀² ≤ 2FB` and `α₀ ≤ R(y) ≤ α₀/(1 − y/a²)`; the confined oscillator reproduces `g = q²/(2mħΩ³)`, `α(ω) = q²/(m(Ω² − ω²))` and `F = q²ħ²/(2m)`, attains the static bound, and gives the exact table; the identification target `R_η = c r ⇔ σ² = 1/(c r) − η`; no single constant calibrates the field-derivative candidate in the oscillator | [`LightSpectral`](LightSpectral.lean) | 16 |
-| | **Total** | **111** |
+| **Edition 7.2** (§4.9e, §4.10a, §5.2): for a finite spectrum above a gap `a`, `B/β(a) ≤ g` (Corollary 4.7), `2ag ≤ α₀`, `α₀² ≤ 2FB` and `α₀ ≤ R(y) ≤ α₀/(1 − y/a²)`; the confined oscillator reproduces `g = q²/(2mħΩ³)`, `α(ω) = q²/(m(Ω² − ω²))` and `F = q²ħ²/(2m)`, attains the static bound, and gives the exact table; the identification target `R_η = c r ⇔ σ² = 1/(c r) − η`; no single constant calibrates the field-derivative candidate in the oscillator | [`LightSpectral`](LightSpectral.lean) | 20 |
+| | **Total** | **115** |
 
 ## How it is checked
 
