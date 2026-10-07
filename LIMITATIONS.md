@@ -21,5 +21,12 @@ identification.
   a time. For the oscillator, the Gaussian ground state and the Heisenberg-equation
   response are not formalized; the Lean file checks that the stated formulas agree with each
   other and gives the exact table.
+* `oscillator_attains_static_bound` proves the identity `α₀³ = 8g²F` for the oscillator's
+  formulas. The general upper bound `α₀ ≤ 2(g²F)^{1/3}` named in its docstring is not proved
+  here. The bounds on `α₀` that are proved (finite spectrum above a gap `a > 0`, weights
+  `w ≥ 0`, readings `0 ≤ y, y₁, y₂ < a²`) are `2ag ≤ α₀`, `α₀² ≤ 4F·Σ w/t³`, `α₀² ≤ 2FB` and
+  `α₀ ≤ R(y) ≤ α₀/(1 − y/a²)`.
+* `orthogonal_marker_det` (`LightBridges/Examples`) proves only that the 2×2 identity matrix has
+  determinant 1; its reading as a pure-marker Gram obeying `D² + V² = 1` is not formalized.
 
 Formalization is evidence for the mathematics, not for the physical interpretation.

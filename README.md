@@ -30,7 +30,9 @@ Jeromie Beasley
 
 The files keep their original module names and bytes, so their hashes match the verified
 sources exactly. Several file headers still carry the note "NOT COMPILED" from the day they
-were written, before they were first checked; the check below is the current evidence.
+were written, before they were first checked, and some point to `STATUS.json` or
+`evidence/report.json`, which are not part of this repository; the check below is the current
+evidence.
 
 | Subject | File | Theorems |
 | :--- | :--- | :-: |
@@ -45,7 +47,7 @@ were written, before they were first checked; the check below is the current evi
 | **Optical response as a weighted metric**: positive weights, matching null directions, lower and upper bounds, and the peel: reducing channel weights cannot raise the response, and a null direction persists | [`OpticalMetric`](OpticalMetric.lean) | 16 |
 | **Rigidity**: the regularized singular-value response and its positivity | [`Rigidity`](Rigidity.lean) | 8 |
 | **Completion steps**: equal metric with unequal static response, the unique lossless two-pole zero between the poles, the calibration obstruction, equal weighted-Gram kernels | [`LightCompletion`](LightCompletion.lean) | 9 |
-| **Edition 7.2** (§4.9e, §4.10a, §5.2): for a finite spectrum above a gap `a`, `B/β(a) ≤ g` (Corollary 4.7), `2ag ≤ α₀`, `α₀² ≤ 2FB` and `α₀ ≤ R(y) ≤ α₀/(1 − y/a²)`; Theorem 4.9 on a finite grid: under upward redistribution with conserved total the metric change is nonnegative and vanishes exactly when the response change does; the confined oscillator reproduces `g = q²/(2mħΩ³)`, `α(ω) = q²/(m(Ω² − ω²))` and `F = q²ħ²/(2m)`, attains the static bound, and gives the exact table; the identification target `R_η = c r ⇔ σ² = 1/(c r) − η`; no single constant calibrates the field-derivative candidate in the oscillator | [`LightSpectral`](LightSpectral.lean) | 27 |
+| **Edition 7.2** (§4.9e, §4.10a, §5.2): for a finite spectrum above a gap `a > 0` (weights `w ≥ 0`, readings `0 ≤ y, y₁, y₂ < a²`), `B/β(a) ≤ g` (Corollary 4.7), `2ag ≤ α₀`, `α₀² ≤ 2FB` and `α₀ ≤ R(y) ≤ α₀/(1 − y/a²)`; Theorem 4.9 on a finite grid of gaps `0 < t₀ < t₁ < …`: under upward redistribution with conserved total the metric change is nonnegative and, for a reading `y < t₀²`, vanishes exactly when the response change does; the confined oscillator reproduces `g = q²/(2mħΩ³)`, `α(ω) = q²/(m(Ω² − ω²))` and `F = q²ħ²/(2m)`, satisfies `α₀³ = 8g²F` (the equality case of the upper bound `α₀ ≤ 2(g²F)^{1/3}`, which is not itself formalized here), and gives the exact table; the identification target `R_η = c r ⇔ σ² = 1/(c r) − η`; no single constant calibrates the field-derivative candidate in the oscillator | [`LightSpectral`](LightSpectral.lean) | 27 |
 | | **Total** | **122** |
 
 ## How it is checked
@@ -56,9 +58,11 @@ Every push runs [the proof check](.github/workflows/build.yml) on GitHub:
 2. **Independent replay**: every module is re-checked by Lean's separate kernel checker.
 3. **Axiom audit**: every named theorem depends only on `propext`, `Classical.choice` and
    `Quot.sound`. No `sorry`, no project axioms, no `native_decide`.
-4. **False controls**: four deliberately false statements must fail to compile, for a
+4. **False controls**: six deliberately false statements must fail to compile, for a
    mathematical reason: an oblique trace bound, a zero regulator, perfect absorption by a
-   sheet, and a tune-out that kills the metric.
+   sheet, a tune-out that kills the metric, a reversed static bound, and the identification
+   target without its regulator. The last two are written as explicit numeric instances, not
+   through the library's definitions.
 
 ```bash
 lake exe cache get
