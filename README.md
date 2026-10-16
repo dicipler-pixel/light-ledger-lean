@@ -12,16 +12,25 @@
 ![Text: CC BY 4.0](https://img.shields.io/badge/text-CC%20BY%204.0-lightgrey)
 [![Paper DOI](https://img.shields.io/badge/paper-10.5281%2Fzenodo.22123115-blue)](https://doi.org/10.5281/zenodo.22123115)
 
-Jeromie Beasley
+JEROMIE BEASLEY
 
 </div>
 
 ---
 
+## Research overview
+
+The paper constructs its metric and ledger registers in explicit finite models. The ledger requires an admissible resolvent contour and an analytic branch rather than a local pairing. Its integer rank/winding content can survive metric degeneration under continued admissibility; the ledger value is even, not generally constant.
+
+Light as carrier and matter as the source of the relevant constraints is the organizing interpretation **[H]**, not a consequence of the finite algebra. Edition 7.2 adds gapped spectral-measure bounds from subgap optical readings, conserved-strength redistribution, and an exactly solved confined oscillator. This repository formalizes selected finite-spectrum and finite-grid counterparts; see the [paper-to-Lean scope map](PAPER_SCOPE.md).
+
+*AI-assisted research and exposition; Jeromie Beasley is responsible for the claims and their interpretation. See [AI_USE.md](AI_USE.md).*
+
 ## Start here
 
 | If you want to… | Open |
 | :--- | :--- |
+| Match the paper's results to the formal proofs | [`PAPER_SCOPE.md`](PAPER_SCOPE.md) |
 | Know exactly what is **not** proved | [`LIMITATIONS.md`](LIMITATIONS.md) |
 | Check where every file came from | [`PROVENANCE.md`](PROVENANCE.md) |
 | See the statements that must be rejected | [`FalseControls/`](FalseControls/) |
